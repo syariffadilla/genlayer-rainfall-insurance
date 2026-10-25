@@ -76,9 +76,34 @@ export function newBurnerKey() {
 /** Client signing through an injected wallet (MetaMask). */
 export async function walletClient(provider) {
   const [address] = await provider.request({ method: "eth_requestAccounts" });
+  await ensureStudionet(provider);
   const client = createClient({ chain: CHAIN, account: address, provider });
-  await client.connect("studionet"); // adds/switches the GenLayer Studionet network in the wallet
   return { client, address };
+}
+
+/**
+ * Add/switch the wallet to GenLayer Studionet. Unlike genlayer-js connect(), this does
+ * not require the GenLayer MetaMask Snap, which many wallets (or users) reject.
+ */
+async function ensureStudionet(provider) {
+  const chainId = "0x" + CHAIN.id.toString(16);
+  const current = await provider.request({ method: "eth_chainId" });
+  if (current === chainId) return;
+  try {
+    await provider.request({ method: "wallet_switchEthereumChain", params: [{ chainId }] });
+  } catch (e) {
+    if (e?.code !== 4902 && !/unrecognized|not added|unknown chain/i.test(e?.message || "")) throw e;
+    await provider.request({
+      method: "wallet_addEthereumChain",
+      params: [{
+        chainId,
+        chainName: CHAIN.name,
+        rpcUrls: CHAIN.rpcUrls.default.http,
+        nativeCurrency: CHAIN.nativeCurrency,
+        blockExplorerUrls: CHAIN.blockExplorers?.default?.url ? [CHAIN.blockExplorers.default.url] : undefined,
+      }],
+    });
+  }
 }
 
 /** Studio-only faucet (simulated balances). */

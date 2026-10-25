@@ -170,7 +170,13 @@ async function connectWallet() {
     renderAccount();
     renderAll();
   } catch (e) {
-    alert("Wallet connection failed: " + (e?.shortMessage || e?.message || e));
+    const msg = e?.shortMessage || e?.message || String(e);
+    alert(
+      "Wallet connection failed: " + msg +
+      (e?.code === 4001 || /reject/i.test(msg)
+        ? "\n\nApprove the wallet's \"Add / switch network: GenLayer Studionet\" prompt, or click \"Use burner account\" to try PadiGuard without a wallet."
+        : ""),
+    );
   }
 }
 
