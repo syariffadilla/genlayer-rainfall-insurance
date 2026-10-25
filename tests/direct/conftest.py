@@ -14,6 +14,17 @@ import re
 import sys
 from pathlib import Path
 
+# Pin the GenVM release used by gltest direct mode. Without this, gltest asks
+# GitHub for the "latest" GenVM release, which is now a v0.3 release candidate
+# that ships no genvm-universal tarball (HTTP 404), and every test errors on a
+# fresh machine. The contract's py-genlayer hash belongs to the v0.2 line.
+import os as _os
+from gltest.direct import sdk_loader as _sdk_loader
+
+GENVM_VERSION = _os.environ.get("GLTEST_GENVM_VERSION", "v0.2.16")
+_sdk_loader.get_latest_version = lambda: GENVM_VERSION
+
+
 import pytest
 
 FIXTURES = Path(__file__).parent / "fixtures"
