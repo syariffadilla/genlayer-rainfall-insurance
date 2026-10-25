@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PadiGuard · parametric rainfall cover on GenLayer</title>
+    <meta name="description" content="Multi-insurer parametric rainfall insurance for rice farmers, priced and settled by GenLayer Intelligent Contracts reading public weather data." />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <img src="./favicon.svg" alt="" width="28" height="28" />
+        <div>
+          <strong>PadiGuard</strong>
+          <span class="muted">parametric rainfall cover · GenLayer Studionet</span>
+        </div>
+      </div>
+      <div id="account" class="account"></div>
+    </header>
+
+    <div class="notice">
+      Test deployment on <b>GenLayer Studionet</b>. Balances are Studio test GEN with no real value.
+      This is a prototype, not a licensed insurance product.
+    </div>
+
+    <nav class="tabs" id="tabs">
+      <button data-tab="overview" class="active">Overview</button>
+      <button data-tab="farmer">Farmer: get cover</button>
+      <button data-tab="insurer">Insurer: pools</button>
+      <button data-tab="policies">Policies &amp; settlement</button>
+      <button data-tab="settings">Settings</button>
+    </nav>
+
+    <main>
+      <section id="tab-overview" class="tab active"></section>
+      <section id="tab-farmer" class="tab"></section>
+      <section id="tab-insurer" class="tab"></section>
+      <section id="tab-policies" class="tab"></section>
+      <section id="tab-settings" class="tab"></section>
+    </main>
+
+    <aside id="txlog" class="txlog"></aside>
+
+    <footer class="footer muted">
+      Contract <code id="footer-addr"></code> · data: Open-Meteo ERA5 archive &amp; NASA POWER ·
+      <a href="https://github.com/syariffadilla" target="_blank" rel="noopener">source on GitHub</a>
+    </footer>
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>
